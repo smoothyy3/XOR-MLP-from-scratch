@@ -1,0 +1,1 @@
+def forward_prop(X, weights):
