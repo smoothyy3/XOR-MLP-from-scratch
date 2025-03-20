@@ -31,7 +31,33 @@ def bin_cross_entropy_loss(y_true: list, y_pred: list, epsilon=1e-15):
     loss = 0
     m = len(y_true)
     for i in range(m):
-        pred = max(epsilon, min(1 - epsilon, y_pred[i]))
-        loss += (y_true[i] * np.log(pred)) + ((1 - y_true[i]) * np.log(1 - pred))
+        for j in range(len(y_true[0])):
+            pred = max(epsilon, min(1 - epsilon, y_pred[i][j]))
+            loss += (y_true[i][j] * np.log(pred)) + ((1 - y_true[i][j]) * np.log(1 - pred))
     
     return - (1 / m) * loss
+
+def matrix_mult(A, B):
+    m = len(A) # rows in A
+    n = len(A[0]) # cols in A
+    p = len(B[0]) # cols in B
+
+    result = [[0] * p for _ in range(m)]
+
+    for i in range(m):
+        for j in range(p):
+            for k in range(n):
+                result[i][j] += A[i][k] * B[k][j]
+    return result
+
+def transpose(A):
+    rows = len(A)
+    cols = len(A[0])
+
+    transposed = [[0] * rows for _ in range(cols)]
+
+    for i in range(rows):
+        for j in range(cols):
+            transposed[j][i] = A[i][j]
+    
+    return transposed
